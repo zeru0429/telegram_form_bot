@@ -1,2 +1,0 @@
-pip install python-telegram-bot==13.14
-pip mysql-connector-python
