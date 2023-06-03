@@ -17,6 +17,12 @@ db_config = {
     'database': 'Mihiretu$default'
 }
 
+cloudinary.config( 
+  cloud_name = "dhpyyqnf9", 
+  api_key = "695419983572712", 
+  api_secret = "cV7t4L4R2OmYzqkDv8tk-gNvb2U" 
+)
+
 count = 1
 user_name = ""
 user_email = ""
