@@ -9,7 +9,12 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 NAME, EMAIL, PHONE_NUMBER, ADDITIONAL_PHOTOS = range(4)
 
 count = 1
-
+db_config = {
+    'user': 'begize',
+    'password': 'BegizeOptimax',
+    'host': 'begize.mysql.pythonanywhere-services.com',
+    'database': 'begize$default'
+}
 
 # Start command handler
 def start(update: Update, context) -> int:
@@ -57,7 +62,7 @@ def additional_photos_handler(update: Update, context) -> int:
 
     if update.message.photo:
         user_additional_photo = update.message.photo[-1].get_file()
-         user_additional_photo.download('{}_additional_photo_{}.jpg'.format(update.message.from_user.id,
+        user_additional_photo.download('{}_additional_photo_{}.jpg'.format(update.message.from_user.id,
                                                                            len(context.user_data[
                                                                                    'additional_photos']) + 1))
         context.user_data['additional_photos'].append(
@@ -89,6 +94,8 @@ def additional_photos_handler(update: Update, context) -> int:
                 chat_id=forward_chat_id,
                 photo=open(additional_photo, 'rb')
             )
+
+
         return ConversationHandler.END
 
     elif update.message.text.lower() != "y":
