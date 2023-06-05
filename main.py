@@ -43,7 +43,7 @@ def email_handler(update: Update, context) -> int:
 def phone_number_handler(update: Update, context) -> int:
     user_phone_number = update.message.text
     context.user_data['phone_number'] = user_phone_number
-    update.message.reply_text("እባኮን ለድርጅቶን ፕሮፋይል የሚሆኑ ፖቶ ይላኩ። \n ሲጨርሱ Done ብለዉ ይላኩ ")
+    update.message.reply_text("እባኮን ለድርጅቶን ፕሮፋይል የሚሆኑ ፎቶ ይላኩ። \n ሲጨርሱ Done ብለዉ ይላኩ ")
 
     return ADDITIONAL_PHOTOS
 
@@ -57,9 +57,6 @@ def additional_photos_handler(update: Update, context) -> int:
 
     if update.message.photo:
         user_additional_photo = update.message.photo[-1].get_file()
-        user_additional_photo.download('{}_additional_photo_{}.jpg'.format(update.message.from_user.id,
-                                                                           len(context.user_data[
-                                                                                   'additional_photos']) + 1))
         context.user_data['additional_photos'].append(
             '{}_additional_photo_{}.jpg'.format(update.message.from_user.id,
                                                 len(context.user_data['additional_photos']) + 1))
@@ -71,7 +68,7 @@ def additional_photos_handler(update: Update, context) -> int:
                                                                                        context.user_data[
                                                                                            'phone_number']))
         for additional_photo in context.user_data['additional_photos']:
-            update.message.reply_text(f'የድርጅቶ ፕሮፋይል ፖቶ {count}:')
+            update.message.reply_text(f'የድርጅቶ ፕሮፋይል ፎቶ {count}:')
             count += 1
             context.bot.send_photo(chat_id=update.message.chat_id, photo=open(additional_photo, 'rb'))
         update.message.reply_text("ምዝገባዎ ተጠናቆዋል። \n  ከእኛጋር ስለሰሩ እናመሰግናለን። ")
