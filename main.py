@@ -9,11 +9,13 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 NAME, EMAIL, PHONE_NUMBER, ADDITIONAL_PHOTOS = range(4)
 
 count = 1
+
+
 # Start command handler
 def start(update: Update, context) -> int:
     global count
     count = 1
-    reply_keyboard = [['Cancel']]
+    reply_keyboard = [['/cancel']]
     update.message.reply_text(
         "እንኳን ወደ በጊዜ ሳሎን መመዝገቢያ ቦት መጡ! \n እባኮን የድርጅቶን ስም ያስገቡ",
         reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True)
@@ -97,7 +99,7 @@ def additional_photos_handler(update: Update, context) -> int:
 
 def cancel(update: Update, context) -> int:
     context.user_data.clear()
-    update.message.reply_text('Operation cancelled.', reply_markup=ReplyKeyboardRemove())
+    update.message.reply_text('ምዝገባዎ ተቆዋርጦዋል እንደገና ለማስጀመር /start ብለዉ ይላኩ.', reply_markup=ReplyKeyboardRemove())
     return ConversationHandler.END
 
 
