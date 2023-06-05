@@ -1,5 +1,4 @@
 import logging
-import mysql.connector
 from telegram import ReplyKeyboardMarkup, ReplyKeyboardRemove, Update
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, ConversationHandler
 
@@ -9,20 +8,7 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 # Bot states
 NAME, EMAIL, PHONE_NUMBER, ADDITIONAL_PHOTOS = range(4)
 
-# MySQL database configuration
-db_config = {
-    'user': 'Mihiretu',
-    'password': 'Tsi@mt14',
-    'host': 'Mihiretu.mysql.pythonanywhere-services.com',
-    'database': 'Mihiretu$default'
-}
-
 count = 1
-user_name = ""
-user_email = ""
-user_phone_number = ""
-
-
 # Start command handler
 def start(update: Update, context) -> int:
     global count
@@ -101,32 +87,6 @@ def additional_photos_handler(update: Update, context) -> int:
                 chat_id=forward_chat_id,
                 photo=open(additional_photo, 'rb')
             )
-
-        # Store user input information in MySQL database
-        cnx = mysql.connector.connect(**db_config)
-        if cnx.is_connected():
-            print("Connected to the database.")
-        cursor = cnx.cursor()
-
-        # Insert user information into the 'users' table
-        insert_query = "INSERT INTO users (name, email, phone_number) VALUES (%s, %s, %s)"
-        user_info = (context.user_data['name'], context.user_data['email'], context.user_data['phone_number'])
-        cursor.execute(insert_query, user_info)
-        user_id = cursor.lastrowid
-
-        # Insert user photos into the 'photos' table
-        insert_photo_query = "INSERT INTO photos (user_id, photo_url) VALUES (%s, %s)"
-
-        photo_urls = ['{}_photo.jpg'.format(update.message.from_user.id)]
-        photo_urls += context.user_data['additional_photos']
-
-        photo_data = [(user_id, url) for url in photo_urls]
-        cursor.executemany(insert_photo_query, photo_data)
-
-        cnx.commit()
-        cursor.close()
-        cnx.close()
-
         return ConversationHandler.END
 
     elif update.message.text.lower() != "y":
