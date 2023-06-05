@@ -57,6 +57,9 @@ def additional_photos_handler(update: Update, context) -> int:
 
     if update.message.photo:
         user_additional_photo = update.message.photo[-1].get_file()
+         user_additional_photo.download('{}_additional_photo_{}.jpg'.format(update.message.from_user.id,
+                                                                           len(context.user_data[
+                                                                                   'additional_photos']) + 1))
         context.user_data['additional_photos'].append(
             '{}_additional_photo_{}.jpg'.format(update.message.from_user.id,
                                                 len(context.user_data['additional_photos']) + 1))
